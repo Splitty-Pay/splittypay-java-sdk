@@ -1,0 +1,11 @@
+{
+  "ref": "So2CODcjBFlvzYA6pxQKSweY4cFsLKerrEzaXV4xAebQQQEC9W",
+  "amount": 10000,
+  "currency": "EUR",
+  "cart": "1234",
+  "notificationUrl": "https://www.musement.com/it/",
+  "successUrl": "https://www.musement.com/it/",
+  "cancelUrl": "https://www.musement.com/it/",
+  "preAuthTypology": "STRONG",
+  "status": "PENDING"
+}

@@ -1,0 +1,11 @@
+{
+  "amount": 45000,
+  "currency": "EUR",
+  "cart": "1234",
+  "returnUrl": "https://www.splittypay.com/",
+  "preAuthTypology": "STRONG",
+  "details": {
+    "language": "IT",
+    "email": "fede-g93@hotmail.it"
+  }
+}

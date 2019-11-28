@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id 'com.adarshr.test-logger' version '1.6.0'
+}
+
+group 'com.splittypay'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+wrapper {
+    gradleVersion = '5.2.1'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    //RETROFIT
+    compile group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.6.1'
+    compile group: 'com.squareup.retrofit2', name: 'converter-jackson', version: '2.6.1'
+
+
+    // JACKSON
+    compile 'com.fasterxml.jackson.core:jackson-core:2.9.9'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.9'
+    compile 'com.fasterxml.jackson.module:jackson-module-parameter-names:2.9.9'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.9'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9'
+
+    //COMMON
+    compile 'io.vavr:vavr:0.10.2'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '3.14.2'
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile group: 'com.squareup.moshi', name: 'moshi', version: '1.8.0'
+
+    // LOGGING
+    compile 'ch.qos.logback:logback-classic:1.+'
+
+
+    //TEST
+    //testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+    testCompile 'com.tngtech.archunit:archunit-junit5-api:0.10.1'
+    testRuntime 'com.tngtech.archunit:archunit-junit5-engine:0.10.1'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.8'
+    testCompileOnly 'org.projectlombok:lombok:1.18.8'
+    testCompile 'org.mockito:mockito-core:2.23.4'
+    testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.24.1'
+
+}
+
+test {
+    useJUnitPlatform()
+    // Exclude integration tests
+    exclude '**/*IntegrationTest*'
+}

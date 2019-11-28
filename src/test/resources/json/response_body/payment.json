@@ -1,0 +1,10 @@
+{
+  "id": 27,
+  "amount": 10000,
+  "currency": "EUR",
+  "redirectUrl": "https://www.musement.com/it/",
+  "timestamp": 1567757684,
+  "ref": "So2CODcjBFlvzYA6pxQKSweY4cFsLKerrEzaXV4xAebQQQEC9W",
+  "preAuthTypology": "STRONG",
+  "status": "PENDING"
+}
