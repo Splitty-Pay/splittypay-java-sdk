@@ -1,10 +1,11 @@
 plugins {
     id 'java'
     id 'com.adarshr.test-logger' version '1.6.0'
+    id 'maven-publish'
 }
 
 group 'com.splittypay'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -61,4 +62,22 @@ test {
     useJUnitPlatform()
     // Exclude integration tests
     exclude '**/*IntegrationTest*'
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Splitty-Pay/splittypay-java-sdk")
+            credentials {
+                    username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                    password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD"
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
