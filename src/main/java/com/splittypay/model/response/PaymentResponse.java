@@ -27,4 +27,10 @@ public class PaymentResponse extends BasePayment {
 
     @JsonProperty("redirectUrl")
     private String redirectUrl;
+
+    @JsonProperty("clientSecret")
+    private String clientSecret;
+
+    @JsonProperty("publicKey")
+    private String publicKey;
 }

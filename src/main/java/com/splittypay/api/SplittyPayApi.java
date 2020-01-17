@@ -3,7 +3,11 @@ package com.splittypay.api;
 import com.splittypay.model.Page;
 import com.splittypay.model.request.PayOutRequest;
 import com.splittypay.model.request.PaymentRequest;
-import com.splittypay.model.response.*;
+import com.splittypay.model.response.BalanceResponse;
+import com.splittypay.model.response.InteractionResponse;
+import com.splittypay.model.response.PayOutResponse;
+import com.splittypay.model.response.PaymentMerchantResponse;
+import com.splittypay.model.response.PaymentResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -37,9 +41,10 @@ public interface SplittyPayApi {
     @GET("payouts")
     Call<Page<PayOutResponse>> getPayOuts();
 
-    @GET("interactions/{id}")
+    @GET("payments/{id}/interactions")
     Call<Page<InteractionResponse>> getInteractions(@Path("id") int id);
 
-    @GET("interactions/getsByRandomId/{randomId}")
+    @GET("payments/getsByRandomId/{randomId}/interactions")
     Call<Page<InteractionResponse>> getInteractionsByRef(@Path("randomId") String randomId);
+
 }

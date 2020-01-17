@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.splittypay'
-version '1.0'
+version '1.1'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -71,7 +71,7 @@ publishing {
             url = uri("https://maven.pkg.github.com/Splitty-Pay/splittypay-java-sdk")
             credentials {
                     username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                    password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD"
+                    password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
             }
         }
     }

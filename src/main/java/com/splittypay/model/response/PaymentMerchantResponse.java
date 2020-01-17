@@ -49,4 +49,11 @@ public class PaymentMerchantResponse extends BasePayment {
 
     @JsonProperty("ref")
     private String ref;
+
+    @JsonProperty("psp")
+    private Integer psp;
+
+    @JsonProperty("expired")
+    private Boolean expired;
 }
+

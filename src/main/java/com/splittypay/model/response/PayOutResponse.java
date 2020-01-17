@@ -13,4 +13,7 @@ public class PayOutResponse extends MoneyAmount {
 
     @JsonProperty("creation")
     private String creation;
+
+    @JsonProperty("resultMessage")
+    private String resultMessage;
 }

@@ -7,8 +7,12 @@ import com.splittypay.model.SplittyPayEnvironment;
 import com.splittypay.model.request.Details;
 import com.splittypay.model.request.PaymentRequest;
 import com.splittypay.model.response.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 
 @TestMethodOrder(OrderAnnotation.class)
@@ -19,7 +23,7 @@ class SplittyPayClientIntegrationTest {
     @BeforeAll
     static void initSplittyPayClient() {
         //String accessToken = Optional.ofNullable(System.getenv("IT_ACCESS_TOKEN")).filter(StringUtils::isNotBlank).get();
-        splittyPayClient = SplittyPayClient.newSplittyPayClientFor(SplittyPayEnvironment.SANDBOX, "e675a04f-a76d-4d24-b586-f8638803b872");
+        splittyPayClient = SplittyPayClient.newSplittyPayClientFor(SplittyPayEnvironment.SANDBOX, "edf61de8-2756-4186-9ab7-ae6c30ba0675");
     }
 
     @Test
@@ -33,7 +37,7 @@ class SplittyPayClientIntegrationTest {
                 .successUrl("https://successUrl")
                 .amount(10000)
                 .details(Details.builder()
-                        .email("fede-g93@hotmail.it")
+                        .email("example@splittypay.com")
                         .language("IT")
                         .build()
                 ).build());
@@ -44,11 +48,32 @@ class SplittyPayClientIntegrationTest {
 
     }
 
-    //@Test
-    //@Order(2)
     void getPayment(int id) {
         PaymentMerchantResponse paymentResponse = splittyPayClient.getPayment(id);
         Assertions.assertNotNull(paymentResponse);
+        Assertions.assertEquals(paymentResponse.getStatus(), PaymentStatus.PENDING);
+    }
+
+    @Test
+    @Order(2)
+    void createPaymentSingleCard() {
+        PaymentResponse paymentResponse = splittyPayClient.createPayment(PaymentRequest.builder()
+                .cart("123")
+                .currency("EUR")
+                .notificationUrl("https://splittypay.com")
+                .cancelUrl("https://errorUrl")
+                .successUrl("https://successUrl")
+                .amount(10000)
+                .type("MONO")
+                .details(Details.builder()
+                        .email("example@splittypay.com")
+                        .language("IT")
+                        .build()
+                ).build());
+
+        Assertions.assertNotNull(paymentResponse);
+        Assertions.assertNotNull(paymentResponse.getClientSecret());
+        Assertions.assertNotNull(paymentResponse.getPublicKey());
         Assertions.assertEquals(paymentResponse.getStatus(), PaymentStatus.PENDING);
     }
 
