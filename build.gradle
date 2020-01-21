@@ -2,10 +2,13 @@ plugins {
     id 'java'
     id 'com.adarshr.test-logger' version '1.6.0'
     id 'maven-publish'
+    id 'signing'
+    id 'maven'
 }
 
-group 'com.splittypay'
-version '1.1'
+group = 'com.splittypay'
+version = '1.1'
+archivesBaseName = 'splittypay-java-sdk'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -42,7 +45,7 @@ dependencies {
     compile group: 'com.squareup.moshi', name: 'moshi', version: '1.8.0'
 
     // LOGGING
-    compile 'ch.qos.logback:logback-classic:1.+'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
 
 
     //TEST
@@ -58,26 +61,134 @@ dependencies {
 
 }
 
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
 test {
     useJUnitPlatform()
     // Exclude integration tests
     exclude '**/*IntegrationTest*'
 }
 
+signing {
+    sign configurations.archives
+}
+
+/*java {
+    withJavadocJar()
+    withSourcesJar()
+}*/
+
+
 publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Splitty-Pay/splittypay-java-sdk")
-            credentials {
-                    username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                    password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.splittypay'
+            artifactId = 'splittypay-java-sdk'
+            description = 'Java client to consume Splitty Pay API'
+            version = '1.1'
+
+            from components.java
+
+            //customizePom(pom)
+            pom {
+                description = 'Java client to consume Splitty Pay API'
+                name = 'Splitty Pay Java SDK Client'
+                url = 'https://github.com/Splitty-Pay/splittypay-java-sdk'
+                packaging = 'jar'
+                organization {
+                    name = 'com.splittypay'
+                    url = 'https://github.com/Splitty-Pay'
+                }
+                issueManagement {
+                    system = 'GitHub'
+                    url = 'https://github.com/Splitty-Pay/splittypay-java-sdk/issues'
+                }
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://github.com/Splitty-Pay/splittypay-java-sdk/blob/master/LICENSE'
+                        distribution = 'repo'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/Splitty-Pay/splittypay-java-sdk'
+                    connection = 'https://github.com/Splitty-Pay/splittypay-java-sdk.git'
+                    developerConnection = 'scm:git:ssh://git@github.com:Splitty-Pay/splittypay-java-sdk.git'
+                }
+                developers {
+                    developer {
+                        name = 'Federico'
+                    }
+                }
             }
         }
     }
-    publications {
-        gpr(MavenPublication) {
-            from(components.java)
+    repositories {
+            maven {
+                def releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2")
+                def snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots")
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                credentials {
+                    username sonatypeUsername
+                    password sonatypePassword
+                }
+            }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+
+            pom.project {
+                name 'Splitty Pay Java SDK Client'
+                packaging 'jar'
+                version '1.1'
+                // optionally artifactId can be defined here
+                description 'Java client to consume Splitty Pay API'
+                url 'https://github.com/Splitty-Pay/splittypay-java-sdk'
+
+                scm {
+                    url 'https://github.com/Splitty-Pay/splittypay-java-sdk'
+                    connection 'https://github.com/Splitty-Pay/splittypay-java-sdk.git'
+                    developerConnection'scm:git:ssh://git@github.com:Splitty-Pay/splittypay-java-sdk.git'
+                }
+
+                licenses {
+                    license {
+                        name 'MIT License'
+                        url 'https://github.com/Splitty-Pay/splittypay-java-sdk/blob/master/LICENSE'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        name 'Federico'
+                    }
+                }
+            }
         }
     }
 }

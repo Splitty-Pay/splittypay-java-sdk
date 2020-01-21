@@ -1,10 +1,10 @@
 # Splitty Pay Java Client
 
-Java client to consume [Splitty Pay API](https://documenter.getpostman.com/view/1912948/SVtWwnQG?version=latest).
+Java client to consume [Splitty Pay API](https://documenter.getpostman.com/view/1912948/SW11Xdy5?version=latest).
 
 ## Usage
 
-Library artifactory is published on [GitHub Package](https://help.github.com/en/github/managing-packages-with-github-packages/about-github-packages). All the packages are released on https://github.com/Splitty-Pay/splittypay-java-sdk/packages
+Library artifactory is published on [Maven Central](https://search.maven.org/search?q=a:splittypay-java-sdk).
 
 ```xml
 <dependency>
